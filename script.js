@@ -1,33 +1,55 @@
 // Week 9 Part A - Complete API Project
 
-const loadPosts = document.querySelector('#load-post');
-const userInput = document.querySelector('user-input');
-const result = document.querySelector('result');
+const loadPosts = document.querySelector('#load-posts');
+const userInput = document.querySelector('#user-input');
+const result = document.querySelector('#result');
+const loadButton = document.querySelector('#load-button');
 
-// const loadButton = document.querySelector('#load-button');
-// const result = document.querySelector('#result');
-async function showPosts() {
-  userInput.ariaPlaceholder = 'Enter a USER ID';
-  result.textContent = 'Loading posts...';
+const userId = Number(userInput.value);
+console.log(userId);
+async function getPosts(userId) {
+  // result.textContent = 'Loading posts...';
+  console.log(userId);
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+
+  if (!response.ok) {
+    throw new Error(`Response failed: ${response.status}`);
+  }
+
+  const posts = await response.json();
+  const postCollection = posts.filter((post) => {
+    return post.userId === userId;
+  });
+
+  const matchingPosts = postCollection.map((item) => {
+    return {
+      id: item.id,
+      userId: item.userId,
+      title: item.title,
+      body: item.body,
+    };
+  });
+  console.log(userId);
+  console.log(matchingPosts);
+  // return matchingPosts;
 }
 
-// async function showUser() {
-//   result.textContent = 'Loading...';
+// Caller function :
 
-//   try {
-//     const response = await fetch(
-//       'https://jsonplaceholder.typicode.com/users/1',
-//     );
+async function showPosts() {
+  // console.log(typeof Number(userValue));
+  // console.log(typeof getPosts(userValue));
 
-//     if (!response.ok) {
-//       throw new Error(`Request failed: ${response.status}`);
-//     }
+  try {
+    const userSelection = await getPosts(userId);
+    // console.log(getPosts(userValue));
+    // console.log(userSelection);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 
-//     const user = await response.json();
-//     result.textContent = user.name;
-//   } catch (error) {
-//     result.textContent = `Unable to load user: ${error.message}`;
-//   }
-// }
+loadPosts.addEventListener('click', getPosts);
 
-// loadButton.addEventListener('click', showUser);
+// getPosts(3);
+// showPosts(5);

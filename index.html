@@ -8,8 +8,18 @@
     <script src="script.js" defer></script>
   </head>
   <body>
-    <button id="load-posts">Load Posts</button>
-    <input id="user-input" />
-    <p id="result"></p>
+    <main>
+      <button id="load-posts">Load Posts</button>
+      <label type="number" id="input-label">
+        <input id="user-input" placeholder="Enter a USER ID" />
+      </label>
+      <p id="error-message"></p>
+      <div id="container">
+        <div class="result">
+          <p id="title"></p>
+          <p id="body"></p>
+        </div>
+      </div>
+    </main>
   </body>
 </html>
